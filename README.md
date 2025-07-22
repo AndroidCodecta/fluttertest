@@ -1,10 +1,11 @@
 # fluttertest
 
-A new Flutter project.
+Proyecto tomapedidos
 
-## Getting Started
+## FIGMA
 
-This project is a starting point for a Flutter application.
+https://www.figma.com/design/q2otIqUK8xlwrJZAAnGPmC/tomapedidos-II?node-id=2002-163&t=J7SyNhseH5q9MYtw-0
+
 
 A few resources to get you started if this is your first Flutter project:
 
