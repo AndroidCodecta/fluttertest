@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../clientes/clientes_page.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -18,6 +19,12 @@ class _LoginFormState extends State<LoginForm> {
     // Aquí va la lógica de validación/autenticación
     print('Usuario: $username');
     print('Contraseña: $password');
+
+    // Ir a la pantalla de clientes
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ClientesPage()),
+    );
   }
 
   @override
