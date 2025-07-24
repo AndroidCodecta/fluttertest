@@ -1,6 +1,9 @@
+// pages/clientes_page.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/cliente.dart';
 import 'agregar_cliente_page.dart';
+import 'package:fluttertest/widgets/nav_wrapper.dart';
+import '../login/login_page.dart';
 
 class ClientesPage extends StatefulWidget {
   const ClientesPage({super.key});
@@ -12,13 +15,13 @@ class ClientesPage extends StatefulWidget {
 class _ClientesPageState extends State<ClientesPage> {
   final List<Cliente> _clientes = [];
   final TextEditingController _busquedaController = TextEditingController();
-  int _selectedIndex = 2; // Clientes es el tercero (índice 2)
 
   List<Cliente> get _clientesFiltrados {
     final query = _busquedaController.text.toLowerCase();
     if (query.isEmpty) return _clientes;
-    return _clientes.where((c) =>
-        c.nombre.toLowerCase().contains(query) || c.dniRuc.contains(query)).toList();
+    return _clientes
+        .where((c) => c.nombre.toLowerCase().contains(query) || c.dniRuc.contains(query))
+        .toList();
   }
 
   void _abrirFormularioAgregar() async {
@@ -32,13 +35,6 @@ class _ClientesPageState extends State<ClientesPage> {
         _clientes.add(nuevoCliente);
       });
     }
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
   }
 
   @override
@@ -87,7 +83,11 @@ class _ClientesPageState extends State<ClientesPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // O cerrar sesión real
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                    (route) => false,
+                  );
                 },
                 child: const Text('Cerrar sesión'),
               ),
@@ -95,33 +95,7 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed, // Importante para mostrar todos los textos
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Carrito',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Clientes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Historial',
-          ),
-        ],
-      ),
+      bottomNavigationBar: const NavWrapper(currentIndex: 2),
     );
   }
 }
