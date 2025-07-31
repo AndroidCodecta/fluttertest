@@ -8,19 +8,31 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: const [
-                LogoHeader(),
-                SizedBox(height: 40),
-                LoginForm(),
-              ],
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/images/fondo.jpg',
+            fit: BoxFit.cover,
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.5), // Oscurece un poco para contraste
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    LogoHeader(),
+                    SizedBox(height: 40),
+                    LoginForm(),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../clientes/clientes_page.dart';
+import 'package:fluttertest/screens/clientes/clientes_page.dart';
+
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -17,11 +18,11 @@ class _LoginFormState extends State<LoginForm> {
     final password = _passwordController.text;
 
     // Aquí va la lógica de validación/autenticación
-    print('Usuario: $username');
-    print('Contraseña: $password');
+    // print('Usuario: $username');
+    // print('Contraseña: $password');
 
-    // Ir a la pantalla de clientes
-    Navigator.push(
+    // Ir a la pantalla de inicio
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const ClientesPage()),
     );
@@ -35,6 +36,8 @@ class _LoginFormState extends State<LoginForm> {
           controller: _usernameController,
           decoration: const InputDecoration(
             labelText: 'Usuario',
+            
+            labelStyle: TextStyle(color: Colors.white),
             border: OutlineInputBorder(),
           ),
         ),
@@ -44,6 +47,7 @@ class _LoginFormState extends State<LoginForm> {
           obscureText: true,
           decoration: const InputDecoration(
             labelText: 'Contraseña',
+            labelStyle: TextStyle(color: Colors.white),
             border: OutlineInputBorder(),
           ),
         ),

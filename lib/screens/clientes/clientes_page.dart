@@ -1,4 +1,3 @@
-// pages/clientes_page.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/cliente.dart';
 import 'agregar_cliente_page.dart';
@@ -40,19 +39,42 @@ class _ClientesPageState extends State<ClientesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Clientes'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _abrirFormularioAgregar,
-          ),
-        ],
-      ),
       body: Column(
         children: [
+          // Banner arriba
+          SizedBox(
+            width: double.infinity,
+            height: 80,
+            child: Image.asset(
+              'assets/images/fondo.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          // Título y botón agregar
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Clientes',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: _abrirFormularioAgregar,
+                ),
+              ],
+            ),
+          ),
+
+          // Buscador
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               controller: _busquedaController,
               onChanged: (_) => setState(() {}),
@@ -63,6 +85,10 @@ class _ClientesPageState extends State<ClientesPage> {
               ),
             ),
           ),
+
+          const SizedBox(height: 8),
+
+          // Lista de clientes
           Expanded(
             child: ListView.builder(
               itemCount: _clientesFiltrados.length,
@@ -76,7 +102,10 @@ class _ClientesPageState extends State<ClientesPage> {
               },
             ),
           ),
+
           const Divider(),
+
+          // Botón cerrar sesión
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(

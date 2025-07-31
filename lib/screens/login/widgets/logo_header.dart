@@ -9,12 +9,12 @@ class LogoHeader extends StatelessWidget {
       children: const [
         Text(
           'Bienvenido',
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold,color: Colors.white),
         ),
         SizedBox(height: 20),
         CircleAvatar(
           radius: 50,
-          backgroundImage: AssetImage('assets/logo.png'), // Asegúrate de tener este archivo
+          backgroundImage: AssetImage('assets/images/logo.jpg'), // Asegúrate de tener este archivo
         ),
       ],
     );
