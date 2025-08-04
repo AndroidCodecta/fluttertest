@@ -25,10 +25,7 @@ class ReciboPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           const SizedBox(height: 16),
@@ -44,7 +41,10 @@ class ReciboPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Detalle de compra:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Detalle de compra:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 8),
 
                   Expanded(
@@ -52,12 +52,17 @@ class ReciboPage extends StatelessWidget {
                       itemCount: productosComprados.length,
                       itemBuilder: (context, index) {
                         final producto = productosComprados[index];
-                        final double totalProducto = producto['cantidad'] * producto['precio'];
+                        final double totalProducto =
+                            producto['cantidad'] * producto['precio'];
 
                         return ListTile(
                           title: Text(producto['nombre']),
-                          subtitle: Text('${producto['cantidad']} x \$${producto['precio'].toStringAsFixed(2)}'),
-                          trailing: Text('\$${totalProducto.toStringAsFixed(2)}'),
+                          subtitle: Text(
+                            '${producto['cantidad']} x \$${producto['precio'].toStringAsFixed(2)}',
+                          ),
+                          trailing: Text(
+                            '\$${totalProducto.toStringAsFixed(2)}',
+                          ),
                         );
                       },
                     ),
@@ -71,7 +76,10 @@ class ReciboPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Subtotal:', style: TextStyle(fontSize: 16)),
-                        Text('\$${subtotal.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16)),
+                        Text(
+                          '\$${subtotal.toStringAsFixed(2)}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
                       ],
                     ),
                   ),
@@ -80,8 +88,21 @@ class ReciboPage extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Total:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        Text('\$${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green)),
+                        const Text(
+                          'Total:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          '\$${total.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -94,7 +115,9 @@ class ReciboPage extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Descargando recibo...')),
+                              const SnackBar(
+                                content: Text('Descargando recibo...'),
+                              ),
                             );
                           },
                           icon: const Icon(Icons.download),
@@ -106,7 +129,9 @@ class ReciboPage extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Compartiendo recibo...')),
+                              const SnackBar(
+                                content: Text('Compartiendo recibo...'),
+                              ),
                             );
                           },
                           icon: const Icon(Icons.share),
