@@ -1,11 +1,18 @@
-// screens/inicio/inicio_page.dart
 import 'package:flutter/material.dart';
+import 'package:fluttertest/screens/productos/productos_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 
-class InicioPage extends StatelessWidget {
+class InicioPage extends StatefulWidget {
   const InicioPage({super.key});
 
-  final List<Map<String, String>> categorias = const [
+  @override
+  State<InicioPage> createState() => _InicioPageState();
+}
+
+class _InicioPageState extends State<InicioPage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  final List<Map<String, String>> _todasLasCategorias = const [
     {'nombre': 'Limpieza', 'icono': '🧼'},
     {'nombre': 'Abarrotes', 'icono': '🥫'},
     {'nombre': 'Bebidas', 'icono': '🥤'},
@@ -13,6 +20,31 @@ class InicioPage extends StatelessWidget {
     {'nombre': 'Carnes', 'icono': '🍖'},
     {'nombre': 'Lácteos', 'icono': '🥛'},
   ];
+
+  List<Map<String, String>> _categoriasFiltradas = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _categoriasFiltradas = _todasLasCategorias;
+    _searchController.addListener(_filtrarCategorias);
+  }
+
+  void _filtrarCategorias() {
+    final query = _searchController.text.toLowerCase();
+
+    setState(() {
+      _categoriasFiltradas = _todasLasCategorias.where((categoria) {
+        return categoria['nombre']!.toLowerCase().contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +69,21 @@ class InicioPage extends StatelessWidget {
             ),
           ),
 
+          // Barra de búsqueda
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Buscar categoría...',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
           // Cuadrícula de categorías
           Expanded(
             child: Padding(
@@ -45,14 +92,19 @@ class InicioPage extends StatelessWidget {
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                children: categorias.map((categoria) {
+                children: _categoriasFiltradas.map((categoria) {
                   return Card(
                     elevation: 3,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
-                        // Acción al tocar una categoría
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ProductosPage(categoria: categoria['nombre']!),
+                          ),
+                        );
                       },
                       child: Center(
                         child: Column(

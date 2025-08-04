@@ -1,10 +1,8 @@
-// widgets/nav_wrapper.dart
 import 'package:flutter/material.dart';
 import '../screens/inicio/inicio_page.dart';
-// import '../screens/carrito/carrito_page.dart';
+import '../screens/carrito/carrito_page.dart';
 import '../screens/clientes/clientes_page.dart';
-// import '../screens/historial/historial_page.dart';
-
+import '../screens/historial/historial_page.dart';
 
 class NavWrapper extends StatelessWidget {
   final int currentIndex;
@@ -19,8 +17,14 @@ class NavWrapper extends StatelessWidget {
       case 0:
         page = const InicioPage();
         break;
+      case 1:
+        page = const CarritoPage();
+        break;
       case 2:
         page = const ClientesPage();
+        break;
+      case 3:
+        page = const HistorialPage();
         break;
       default:
         return;
@@ -30,7 +34,6 @@ class NavWrapper extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (_) => page),
     );
-    
   }
 
   @override
@@ -38,10 +41,10 @@ class NavWrapper extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) => _onItemTapped(context, index),
-      selectedItemColor: Colors.black,       // <-- Color seleccionado
-      unselectedItemColor: Colors.black54,   // <-- Color no seleccionado
-      backgroundColor: Colors.white,         // <-- Fondo blanco
-      type: BottomNavigationBarType.fixed,   // <-- Para que no se mueva el ícono
+      selectedItemColor: Colors.black,       // Color seleccionado
+      unselectedItemColor: Colors.black54,   // Color no seleccionado
+      backgroundColor: Colors.white,         // Fondo blanco
+      type: BottomNavigationBarType.fixed,   // Para que no se mueva el ícono
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
         BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Carrito'),
