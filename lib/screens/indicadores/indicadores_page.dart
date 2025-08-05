@@ -15,11 +15,11 @@ class IndicadoresPage extends StatelessWidget {
   ];
 
   final List<Map<String, dynamic>> indicadores = const [
-    { 'visitados_porcentaje': 20,
-      'realizo_pedido_porcentaje': 12,
-      'no_realizo_pedido_porcentaje': 10,
-      'pedido_pendiente_porcentaje': 2,
-      'monto_total_ventas': 587
+    { 'visitados_porcentaje': 50,
+      'realizo_pedido_porcentaje': 75,
+      'no_realizo_pedido_porcentaje': 25,
+      'pedido_pendiente_porcentaje': 20,
+      'monto_total_ventas': 587.97
     },
   ];
 
@@ -115,42 +115,49 @@ class IndicadoresPage extends StatelessWidget {
       bottomNavigationBar: const NavWrapper(currentIndex: 3),
     );
   }
-}
+  Widget _buildIndicatorRow(String label, String value, {bool isAmount = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 16)),
+          Text(value,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: isAmount ? Colors.green : Colors.black,
+              )),
+        ],
+      ),
+    );
+  }
 
-Widget _buildIndicatorRow(String label, String value, {bool isAmount = false}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 16)),
-        Text(value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: isAmount ? Colors.green : Colors.black,
-            )),
-      ],
-    ),
-  );
-}
+  Widget _buildPercentageIndicator(String label, int percentage) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('$percentage% $label',
+              style: const TextStyle(fontSize: 16)),
+          const SizedBox(height: 4),
+          LinearProgressIndicator(
+            value: percentage / 100,
+            backgroundColor: Colors.grey[200],
+            valueColor: AlwaysStoppedAnimation<Color>(
+                _getProgressColor(percentage)),
+            minHeight: 8,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget _buildPercentageIndicator(String label, int percentage) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('$percentage% $label',
-            style: const TextStyle(fontSize: 16)),
-        const SizedBox(height: 4),
-        LinearProgressIndicator(
-          value: percentage / 100,
-          backgroundColor: Colors.grey[200],
-          minHeight: 8,
-          borderRadius: BorderRadius.circular(4),
-        ),
-      ],
-    ),
-  );
+  Color _getProgressColor(int percentage) {
+    if (percentage >= 70) return Colors.green;
+    if (percentage >= 40) return Colors.orange;
+    return Colors.red;
+  }
 }
