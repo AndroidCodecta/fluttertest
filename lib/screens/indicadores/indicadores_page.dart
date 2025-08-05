@@ -112,7 +112,6 @@ class IndicadoresPage extends StatelessWidget {
           ),
         ]
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 3),
     );
   }
   Widget _buildIndicatorRow(String label, String value, {bool isAmount = false}) {
