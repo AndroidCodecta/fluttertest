@@ -1,5 +1,6 @@
 // screens/indicadores/indicadores_page.dart
 import 'package:flutter/material.dart';
+import 'package:fluttertest/screens/clientes/clientes_page.dart';
 import '../../widgets/nav_wrapper.dart';
 
 class IndicadoresPage extends StatelessWidget {
@@ -107,6 +108,24 @@ class IndicadoresPage extends StatelessWidget {
                       'S/.${indicadores[0]['monto_total_ventas'].toString()}',
                       isAmount: true),
                 ],
+              ),
+            ),
+          ),
+
+          // Botón para regresar
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 150,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ClientesPage()),
+                        (route) => false,
+                  );
+                },
+                child: const Text('Ir Atrás'),
               ),
             ),
           ),
