@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/models/cliente.dart';
 import 'agregar_cliente_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
+import '../indicadores/indicadores_page.dart';
 import '../login/login_page.dart';
 
 class ClientesPage extends StatefulWidget {
@@ -36,6 +37,13 @@ class _ClientesPageState extends State<ClientesPage> {
     }
   }
 
+  void _abrirIndicadores() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const IndicadoresPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,9 +72,17 @@ class _ClientesPageState extends State<ClientesPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: _abrirFormularioAgregar,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 130,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          _abrirIndicadores();
+                        },
+                        child: const Text('Indicadores'),
+                    )
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,7 @@
 // screens/historial/historial_page.dart
 import 'package:flutter/material.dart';
 import '../../widgets/nav_wrapper.dart';
+import '../pago/recibo_page.dart';
 
 class HistorialPage extends StatelessWidget {
   const HistorialPage({super.key});
@@ -12,6 +13,13 @@ class HistorialPage extends StatelessWidget {
     {'cliente': 'Carlos Gómez', 'monto': 250.20},
     {'cliente': 'Ana Fernández', 'monto': 180.75},
   ];
+
+  void _abrirRecibo(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ReciboPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +59,10 @@ class HistorialPage extends StatelessWidget {
                     trailing: ElevatedButton(
                       onPressed: () {
                         // Aquí puedes poner la lógica para mostrar la factura
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        /*ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Ver factura de ${pago['cliente']}')),
-                        );
+                        );*/
+                        _abrirRecibo(context);
                       },
                       child: const Text('Ver factura'),
                     ),
