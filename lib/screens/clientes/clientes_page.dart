@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/cliente.dart';
-import 'agregar_cliente_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
 import '../login/login_page.dart';
+import '../inicio/inicio_page.dart'; 
 
 class ClientesPage extends StatefulWidget {
   const ClientesPage({super.key});
@@ -13,34 +13,102 @@ class ClientesPage extends StatefulWidget {
 }
 
 class _ClientesPageState extends State<ClientesPage> {
-  final List<Cliente> _clientes = [];
+  final List<Cliente> _clientes = [
+    Cliente(nombre: 'Tienda San Juan', dniRuc: '10458963215', telefono: '987654321'),
+  ];
+
   final TextEditingController _busquedaController = TextEditingController();
 
   List<Cliente> get _clientesFiltrados {
     final query = _busquedaController.text.toLowerCase();
     if (query.isEmpty) return _clientes;
     return _clientes
-        .where((c) => c.nombre.toLowerCase().contains(query) || c.dniRuc.contains(query))
+        .where((c) =>
+            c.nombre.toLowerCase().contains(query) ||
+            c.dniRuc.contains(query))
         .toList();
-  }
-
-  void _abrirFormularioAgregar() async {
-    final nuevoCliente = await Navigator.push<Cliente>(
-      context,
-      MaterialPageRoute(builder: (_) => const AgregarClientePage()),
-    );
-
-    if (nuevoCliente != null) {
-      setState(() {
-        _clientes.add(nuevoCliente);
-      });
-    }
   }
 
   void _abrirIndicadores() async {
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => const IndicadoresPage()),
+    );
+  }
+
+  void _mostrarDialogoSistemaPedido(Cliente cliente) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Sistema de pedido'),
+        content: Text('¿Qué deseas hacer con "${cliente.nombre}"?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const InicioPage()),
+              );
+            },
+            child: const Text('Realizar pedido'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); 
+              _mostrarMotivoDialog(cliente);
+            },
+            child: const Text('No realizar pedido'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _mostrarMotivoDialog(Cliente cliente) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Motivo'),
+        content: const Text('¿Por qué no se realizará el pedido?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Motivo: Cerrado')),
+              );
+            },
+            child: const Text('Cerrado'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Motivo: Clausurado')),
+              );
+            },
+            child: const Text('Clausurado'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Motivo: No está el responsable')),
+              );
+            },
+            child: const Text('No está el responsable'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -77,11 +145,9 @@ class _ClientesPageState extends State<ClientesPage> {
                   child: SizedBox(
                     width: 130,
                     child: ElevatedButton(
-                        onPressed: () {
-                          _abrirIndicadores();
-                        },
-                        child: const Text('Indicadores'),
-                    )
+                      onPressed: _abrirIndicadores,
+                      child: const Text('Indicadores'),
+                    ),
                   ),
                 ),
               ],
@@ -114,6 +180,7 @@ class _ClientesPageState extends State<ClientesPage> {
                   leading: const CircleAvatar(child: Icon(Icons.person)),
                   title: Text(cliente.nombre),
                   subtitle: Text(cliente.dniRuc),
+                  onTap: () => _mostrarDialogoSistemaPedido(cliente),
                 );
               },
             ),
