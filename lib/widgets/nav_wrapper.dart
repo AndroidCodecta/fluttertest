@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertest/screens/historial/historial_page_2.dart';
 import '../screens/inicio/inicio_page.dart';
 import '../screens/carrito/carrito_page.dart';
 import '../screens/clientes/clientes_page.dart';
@@ -24,7 +25,7 @@ class NavWrapper extends StatelessWidget {
         page = const ClientesPage();
         break;
       case 3:
-        page = const HistorialPage();
+        page = const HistorialPage2();
         break;
       default:
         return;
