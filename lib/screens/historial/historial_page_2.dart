@@ -57,7 +57,7 @@ class HistorialPage2 extends StatelessWidget {
                     leading: Icon(Icons.payment, color: Colors.blue[900]),
                     title: Text(pago['fecha']),
                     subtitle: Text(
-                      '₲${pago['monto'].toStringAsFixed(2)}',
+                      '\$${pago['monto'].toStringAsFixed(2)}',
                       style: const TextStyle(
                         color: Colors.green,
                         fontWeight: FontWeight.bold,
