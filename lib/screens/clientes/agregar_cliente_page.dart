@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/cliente.dart';
 
-
 class AgregarClientePage extends StatefulWidget {
   const AgregarClientePage({super.key});
 
@@ -19,7 +18,7 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton( 
+        leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
@@ -103,7 +102,7 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  final cliente= Cliente(
+                  final cliente = Cliente(
                     nombre: _nombreController.text,
                     dniRuc: _dniRucController.text,
                     telefono: '$_codigoPais ${_telefonoController.text}',
