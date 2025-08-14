@@ -3,7 +3,8 @@ import 'package:fluttertest/models/cliente.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
 import '../login/login_page.dart';
-import '../inicio/inicio_page.dart'; 
+import '../inicio/inicio_page.dart';
+import 'agregar_cliente_page.dart';
 
 class ClientesPage extends StatefulWidget {
   const ClientesPage({super.key});
@@ -27,6 +28,18 @@ class _ClientesPageState extends State<ClientesPage> {
             c.nombre.toLowerCase().contains(query) ||
             c.dniRuc.contains(query))
         .toList();
+  }
+
+  void _abrirAgregarCliente() async {
+    final nuevoCliente = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AgregarClientePage()),
+    );
+    if (nuevoCliente != null) {
+      setState(() {
+        _clientes.add(nuevoCliente);
+      });
+    }
   }
 
   void _abrirIndicadores() async {
@@ -145,8 +158,8 @@ class _ClientesPageState extends State<ClientesPage> {
                   child: SizedBox(
                     width: 130,
                     child: ElevatedButton(
-                      onPressed: _abrirIndicadores,
-                      child: const Text('Indicadores'),
+                      onPressed: _abrirAgregarCliente,
+                      child: const Text('+ Agregar'),
                     ),
                   ),
                 ),
