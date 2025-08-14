@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/screens/clientes/clientes_page.dart';
 
-
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -19,7 +18,7 @@ class _LoginFormState extends State<LoginForm> {
 
     // Aquí va la lógica de validación/autenticación
     // print('Usuario: $username');
-    // print('Contraseña: $password');
+    // print('password: $password');
 
     // Ir a la pantalla de inicio
     Navigator.pushReplacement(
@@ -36,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
           controller: _usernameController,
           decoration: const InputDecoration(
             labelText: 'Usuario',
-            
+
             labelStyle: TextStyle(color: Colors.white),
             border: OutlineInputBorder(),
           ),
@@ -46,7 +45,7 @@ class _LoginFormState extends State<LoginForm> {
           controller: _passwordController,
           obscureText: true,
           decoration: const InputDecoration(
-            labelText: 'Contraseña',
+            labelText: 'password',
             labelStyle: TextStyle(color: Colors.white),
             border: OutlineInputBorder(),
           ),

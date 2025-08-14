@@ -103,9 +103,11 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
               child: ElevatedButton(
                 onPressed: () {
                   final cliente = Cliente(
-                    nombre: _nombreController.text,
+                    idClientes: null,
                     dniRuc: _dniRucController.text,
-                    telefono: '$_codigoPais ${_telefonoController.text}',
+                    nombre: _nombreController.text,
+                    direccion: '',
+                    idUsuario: 1, // Ajustar según el usuario actual
                   );
                   Navigator.pop(context, cliente);
                 },

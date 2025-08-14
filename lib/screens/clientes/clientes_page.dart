@@ -3,7 +3,7 @@ import 'package:fluttertest/models/cliente.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
 import '../login/login_page.dart';
-import '../inicio/inicio_page.dart'; 
+import '../inicio/inicio_page.dart';
 
 class ClientesPage extends StatefulWidget {
   const ClientesPage({super.key});
@@ -14,7 +14,13 @@ class ClientesPage extends StatefulWidget {
 
 class _ClientesPageState extends State<ClientesPage> {
   final List<Cliente> _clientes = [
-    Cliente(nombre: 'Tienda San Juan', dniRuc: '10458963215', telefono: '987654321'),
+    Cliente(
+      idClientes: 1,
+      dniRuc: '10458963215',
+      nombre: 'Tienda San Juan',
+      direccion: 'Av. Principal 123',
+      idUsuario: 1,
+    ),
   ];
 
   final TextEditingController _busquedaController = TextEditingController();
@@ -23,9 +29,11 @@ class _ClientesPageState extends State<ClientesPage> {
     final query = _busquedaController.text.toLowerCase();
     if (query.isEmpty) return _clientes;
     return _clientes
-        .where((c) =>
-            c.nombre.toLowerCase().contains(query) ||
-            c.dniRuc.contains(query))
+        .where(
+          (c) =>
+              c.nombre.toLowerCase().contains(query) ||
+              c.dniRuc.contains(query),
+        )
         .toList();
   }
 
@@ -55,7 +63,7 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); 
+              Navigator.pop(context);
               _mostrarMotivoDialog(cliente);
             },
             child: const Text('No realizar pedido'),
@@ -79,9 +87,9 @@ class _ClientesPageState extends State<ClientesPage> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Motivo: Cerrado')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Motivo: Cerrado')));
             },
             child: const Text('Cerrado'),
           ),
@@ -121,10 +129,7 @@ class _ClientesPageState extends State<ClientesPage> {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           // Título y botón agregar
@@ -135,10 +140,7 @@ class _ClientesPageState extends State<ClientesPage> {
               children: [
                 const Text(
                   'Clientes',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
