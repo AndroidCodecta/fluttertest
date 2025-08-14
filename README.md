@@ -4,7 +4,7 @@ Proyecto tomapedidos para Vendedores
 
 ## FIGMA
 
-https://www.figma.com/design/q2otIqUK8xlwrJZAAnGPmC/tomapedidos-vendedores?node-id=0-1&p=f&t=GIDDTBYzAy8Vt7kS-0
+https://www.figma.com/design/zvOpWkDryuUg02lnSHLLKC/tomapedidos_tienda?t=xYlAX7xXxaMGoOCU-1s
 
 
 A few resources to get you started if this is your first Flutter project:
