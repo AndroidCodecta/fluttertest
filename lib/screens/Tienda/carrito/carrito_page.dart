@@ -1,7 +1,7 @@
 // screens/carrito/carrito_page.dart
 import 'package:flutter/material.dart';
-import '../../widgets/nav_wrapper.dart';
-import 'package:fluttertest/screens/pago/pagar_page.dart';
+import 'package:fluttertest/widgets/nav_wrapper.dart';
+import 'package:fluttertest/screens/tienda/pago/pagar_page.dart';
 
 
 class CarritoPage extends StatefulWidget {

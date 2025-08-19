@@ -1,6 +1,6 @@
 // screens/indicadores/indicadores_page.dart
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/clientes/clientes_page.dart';
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart';
 
 class IndicadoresPage extends StatelessWidget {
   const IndicadoresPage({super.key});

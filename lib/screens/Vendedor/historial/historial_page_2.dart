@@ -1,6 +1,6 @@
 // screens/historial/historial_page.dart
 import 'package:flutter/material.dart';
-import '../../widgets/nav_wrapper.dart';
+import '/widgets/nav_wrapper.dart';
 import '../pago/recibo_page.dart';
 
 class HistorialPage2 extends StatelessWidget {

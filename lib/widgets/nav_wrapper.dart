@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/historial/historial_page_2.dart';
-import '../screens/inicio/inicio_page.dart';
-import '../screens/carrito/carrito_page.dart';
-import '../screens/clientes/clientes_page.dart';
+import 'package:fluttertest/screens/Tienda/historial/historial_page_2.dart';
+import 'package:fluttertest/screens/Tienda/inicio/inicio_page.dart';
+import 'package:fluttertest/screens/Tienda/carrito/carrito_page.dart';
+import 'package:fluttertest/screens/Tienda/clientes/clientes_page.dart';
 
+
+
+import 'package:fluttertest/screens/Vendedor/historial/historial_page.dart';
+import 'package:fluttertest/screens/Vendedor/inicio/inicio_page.dart';
+import 'package:fluttertest/screens/Vendedor/carrito/carrito_page.dart';
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart';
 class NavWrapper extends StatelessWidget {
   final int currentIndex;
 

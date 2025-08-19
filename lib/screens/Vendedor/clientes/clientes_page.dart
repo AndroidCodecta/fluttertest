@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/models/clientes.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
-import '../login/login_page.dart';
+import 'package:fluttertest/screens/login/login_page.dart';
 import '../inicio/inicio_page.dart'; 
 
 class ClientesPage extends StatefulWidget {

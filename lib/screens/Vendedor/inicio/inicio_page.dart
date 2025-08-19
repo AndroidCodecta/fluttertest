@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/productos/productos_page.dart';
+import 'package:fluttertest/screens/Vendedor/productos/productos_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 
 class InicioPage extends StatefulWidget {

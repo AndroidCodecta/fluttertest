@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/models/cliente.dart';
+import 'package:fluttertest/models/clientes.dart';
 
 class AgregarClientePage extends StatefulWidget {
   const AgregarClientePage({super.key});

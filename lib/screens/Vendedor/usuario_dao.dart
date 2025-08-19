@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/clientes/clientes_page.dart';
-import '../../dao/usuario_dao.dart';
-import '../../models/usuario.dart';
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart';
+import 'package:fluttertest/dao/usuario_dao.dart';
+import 'package:fluttertest/models/usuario.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});

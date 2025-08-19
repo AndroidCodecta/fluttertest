@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/models/cliente.dart';
+import 'package:fluttertest/models/clientes.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
 import '../login/login_page.dart';
