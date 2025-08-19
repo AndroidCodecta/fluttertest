@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/screens/clientes/clientes_page.dart';
-import 'package:fluttertest/dao/usuario_dao.dart'; // Asegúrate de que esta ruta sea la correcta
+
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -12,34 +12,20 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final UsuarioDAO _usuarioDAO = UsuarioDAO();
 
-  void _login() async {
-    final username = _usernameController.text.trim();
-    final password = _passwordController.text.trim();
+  void _login() {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
 
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Complete todos los campos")),
-      );
-      return;
-    }
+    // Aquí va la lógica de validación/autenticación
+    // print('Usuario: $username');
+    // print('Contraseña: $password');
 
-    // Validar en base de datos
-    final user = await _usuarioDAO.loginUsuario(username, password);
-
-    if (user != null) {
-      // Login exitoso → ir a la pantalla de clientes
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ClientesPage()),
-      );
-    } else {
-      // Usuario o contraseña incorrectos
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Usuario o contraseña incorrectos")),
-      );
-    }
+    // Ir a la pantalla de inicio
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ClientesPage()),
+    );
   }
 
   @override
@@ -50,6 +36,7 @@ class _LoginFormState extends State<LoginForm> {
           controller: _usernameController,
           decoration: const InputDecoration(
             labelText: 'Usuario',
+            
             labelStyle: TextStyle(color: Colors.white),
             border: OutlineInputBorder(),
           ),

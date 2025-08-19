@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/screens/clientes/clientes_page.dart';
-import 'package:fluttertest/dao/usuario_dao.dart'; // Asegúrate de que esta ruta sea la correcta
+import '../../dao/usuario_dao.dart';
+import '../../models/usuario.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -12,7 +13,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final UsuarioDAO _usuarioDAO = UsuarioDAO();
+  final UsuarioDao _usuarioDao = UsuarioDao();
 
   void _login() async {
     final username = _usernameController.text.trim();
@@ -20,27 +21,18 @@ class _LoginFormState extends State<LoginForm> {
 
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Complete todos los campos")),
+        const SnackBar(content: Text("Ingrese usuario y contraseña")),
       );
       return;
     }
 
-    // Validar en base de datos
-    final user = await _usuarioDAO.loginUsuario(username, password);
+    Usuario? usuario = await _usuarioDao.login(username, password);
 
-    if (user != null) {
-      // Login exitoso → ir a la pantalla de clientes
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ClientesPage()),
-      );
-    } else {
-      // Usuario o contraseña incorrectos
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Usuario o contraseña incorrectos")),
-      );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const ClientesPage()),
+    );
     }
-  }
 
   @override
   Widget build(BuildContext context) {
