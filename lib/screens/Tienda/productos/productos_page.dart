@@ -180,7 +180,7 @@ class _ProductosPageState extends State<ProductosPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 0),
+      bottomNavigationBar: const NavWrapper(currentIndex: 0, rol: 1),
     );
   }
 }

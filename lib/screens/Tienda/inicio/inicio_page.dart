@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/productos/productos_page.dart';
+import 'package:fluttertest/screens/tienda/productos/productos_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 
 class InicioPage extends StatefulWidget {
@@ -55,10 +55,7 @@ class _InicioPageState extends State<InicioPage> {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           const Padding(
@@ -77,7 +74,9 @@ class _InicioPageState extends State<InicioPage> {
               decoration: InputDecoration(
                 hintText: 'Buscar categoría...',
                 prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
@@ -95,14 +94,18 @@ class _InicioPageState extends State<InicioPage> {
                 children: _categoriasFiltradas.map((categoria) {
                   return Card(
                     elevation: 3,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => ProductosPage(categoria: categoria['nombre']!),
+                            builder: (_) => ProductosPage(
+                              categoria: categoria['nombre']!,
+                            ),
                           ),
                         );
                       },
