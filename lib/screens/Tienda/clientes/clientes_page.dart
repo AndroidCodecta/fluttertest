@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/models/clientes.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import '../indicadores/indicadores_page.dart';
-import '../login/login_page.dart';
+import '../../login/login_page.dart';
 import '../inicio/inicio_page.dart';
 import 'agregar_cliente_page.dart';
 
@@ -14,19 +14,26 @@ class ClientesPage extends StatefulWidget {
 }
 
 class _ClientesPageState extends State<ClientesPage> {
-  final List<Cliente> _clientes = [
-    Cliente(nombre: 'Tienda San Juan', dniRuc: '10458963215', telefono: '987654321'),
+  final List<Clientes> _clientes = [
+    Clientes(
+      nombre: 'Tienda San Juan',
+      dniRuc: '10458963215',
+      telefono: '987654321',
+      idUsuario: 0,
+    ),
   ];
 
   final TextEditingController _busquedaController = TextEditingController();
 
-  List<Cliente> get _clientesFiltrados {
+  List<Clientes> get _clientesFiltrados {
     final query = _busquedaController.text.toLowerCase();
     if (query.isEmpty) return _clientes;
     return _clientes
-        .where((c) =>
-            c.nombre.toLowerCase().contains(query) ||
-            c.dniRuc.contains(query))
+        .where(
+          (c) =>
+              c.nombre.toLowerCase().contains(query) ||
+              c.dniRuc.contains(query),
+        )
         .toList();
   }
 
@@ -49,7 +56,7 @@ class _ClientesPageState extends State<ClientesPage> {
     );
   }
 
-  void _mostrarDialogoSistemaPedido(Cliente cliente) {
+  void _mostrarDialogoSistemaPedido(Clientes cliente) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -68,8 +75,8 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); 
-              _mostrarMotivoDialog(cliente);
+              Navigator.pop(context);
+              _mostrarMotivoDialog(cliente); // Change parameter type here
             },
             child: const Text('No realizar pedido'),
           ),
@@ -82,7 +89,7 @@ class _ClientesPageState extends State<ClientesPage> {
     );
   }
 
-  void _mostrarMotivoDialog(Cliente cliente) {
+  void _mostrarMotivoDialog(Clientes cliente) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -92,9 +99,9 @@ class _ClientesPageState extends State<ClientesPage> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Motivo: Cerrado')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Motivo: Cerrado')));
             },
             child: const Text('Cerrado'),
           ),
@@ -134,10 +141,7 @@ class _ClientesPageState extends State<ClientesPage> {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           // Título y botón agregar
@@ -148,10 +152,7 @@ class _ClientesPageState extends State<ClientesPage> {
               children: [
                 const Text(
                   'Clientes',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -220,7 +221,7 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 2),
+      bottomNavigationBar: const NavWrapper(currentIndex: 1, rol: 1),
     );
   }
 }

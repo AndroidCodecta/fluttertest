@@ -130,7 +130,7 @@ class _InicioPageState extends State<InicioPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 0),
+      bottomNavigationBar: const NavWrapper(currentIndex: 0, rol: 1),
     );
   }
 }

@@ -15,6 +15,14 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
   String _codigoPais = '+51'; // Default: Perú
 
   @override
+  void dispose() {
+    _nombreController.dispose();
+    _dniRucController.dispose();
+    _telefonoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -102,10 +110,11 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  final cliente = Cliente(
+                  final cliente = Clientes(
                     nombre: _nombreController.text,
                     dniRuc: _dniRucController.text,
                     telefono: '$_codigoPais ${_telefonoController.text}',
+                    idUsuario: 0,
                   );
                   Navigator.pop(context, cliente);
                 },

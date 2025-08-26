@@ -32,8 +32,9 @@ class DatabaseHelper {
               dni TEXT NOT NULL,
               nombre TEXT NOT NULL,
               usuario TEXT NOT NULL,
-              contraseña TEXT NOT NULL,
-              celular TEXT
+              password TEXT NOT NULL,
+              celular TEXT,
+              rol INTEGER NOT NULL
           );
         ''');
 

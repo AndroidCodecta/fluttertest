@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/clientes/clientes_page.dart';
-import 'package:fluttertest/dao/usuario_dao.dart'; // Asegúrate de que esta ruta sea la correcta
+import '../../Tienda/clientes/clientes_page.dart';
+import '../../Vendedor/clientes/clientes_page.dart';
+import 'package:fluttertest/dao/usuario_dao.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -26,14 +27,25 @@ class _LoginFormState extends State<LoginForm> {
     }
 
     // Validar en base de datos
-    final user = await _usuarioDAO.loginUsuario(username, password);
+    final user = await _usuarioDAO.login(username, password);
 
     if (user != null) {
-      // Login exitoso → ir a la pantalla de clientes
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ClientesPage()),
-      );
+      // Login exitoso → ir a la pantalla de clientes según el rol
+      if (user.rol == 1) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ClientesPage()),
+        );
+      } else if (user.rol == 2) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const VendedorClientesPage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Rol de usuario no válido")),
+        );
+      }
     } else {
       // Usuario o contraseña incorrectos
       ScaffoldMessenger.of(context).showSnackBar(
