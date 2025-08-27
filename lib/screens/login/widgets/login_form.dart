@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/clientes/clientes_page.dart';
+import 'package:fluttertest/screens/Tienda/clientes/clientes_page.dart' as tienda;
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart' as vendedor;
+
 import 'package:fluttertest/dao/usuario_dao.dart'; // Asegúrate de que esta ruta sea la correcta
 
 class LoginForm extends StatefulWidget {
@@ -30,10 +32,20 @@ class _LoginFormState extends State<LoginForm> {
 
     if (user != null) {
       // Login exitoso → ir a la pantalla de clientes
-      Navigator.pushReplacement(
+
+      if (user.rol == "1") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const tienda.ClientesPage()),
+        );
+      } else if (user.rol == "2") {
+        Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ClientesPage()),
+        MaterialPageRoute(builder: (context) => const vendedor.ClientesPage()),
       );
+      }
+
+      
     } else {
       // Usuario o contraseña incorrectos
       ScaffoldMessenger.of(context).showSnackBar(
