@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
+import 'package:fluttertest/database/database_helper.dart';
 
 class ProductoDetallePage extends StatefulWidget {
   final Map<String, dynamic> producto;
 
-  const ProductoDetallePage({
-    super.key,
-    required this.producto,
-  });
+  const ProductoDetallePage({super.key, required this.producto});
 
   @override
   State<ProductoDetallePage> createState() => _ProductoDetallePageState();
@@ -22,10 +20,31 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0I--vLxuv9ICjDe5Pjn35U3fyXDzIgDV3tw&s',
   ];
 
+  Future<void> _agregarAlCarrito() async {
+    final db = await DatabaseHelper().database;
+    final producto = widget.producto;
+    await db.insert('producto_carrito', {
+      'nombre': producto['nombre'],
+      'unid_medida': 'unidad',
+      'cantidad': _cantidad,
+      'descuento': 0.0,
+      'precio': producto['precio'],
+      'id_clientes': 1, // Aquí deberías usar el id del cliente actual
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Agregado $_cantidad x "${producto['nombre']}" al carrito',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final producto = widget.producto;
-    final String nombre = (producto['nombre'] ?? 'Producto desconocido').toString();
+    final String nombre = (producto['nombre'] ?? 'Producto desconocido')
+        .toString();
     final String descripcion = (producto['descripcion'] ?? '').toString();
     final double precioUnitario = (producto['precio'] ?? 0).toDouble();
     final int stock = (producto['stock'] ?? 1).toInt();
@@ -38,10 +57,7 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
             SizedBox(
               width: double.infinity,
               height: 80,
-              child: Image.asset(
-                'assets/images/fondo.jpg',
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
             ),
             SizedBox(
               height: 200,
@@ -65,7 +81,10 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
                 children: [
                   Text(
                     nombre,
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -73,10 +92,7 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
                     style: const TextStyle(fontSize: 18, color: Colors.green),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    descripcion,
-                    style: const TextStyle(fontSize: 16),
-                  ),
+                  Text(descripcion, style: const TextStyle(fontSize: 16)),
                   const SizedBox(height: 8),
                   Text(
                     'Stock disponible: $stock unidades',
@@ -94,12 +110,16 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
                   const SizedBox(width: 12),
                   IconButton(
                     icon: const Icon(Icons.remove_circle_outline),
-                    onPressed: _cantidad > 1 ? () => setState(() => _cantidad--) : null,
+                    onPressed: _cantidad > 1
+                        ? () => setState(() => _cantidad--)
+                        : null,
                   ),
                   Text('$_cantidad', style: const TextStyle(fontSize: 16)),
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline),
-                    onPressed: _cantidad < stock ? () => setState(() => _cantidad++) : null,
+                    onPressed: _cantidad < stock
+                        ? () => setState(() => _cantidad++)
+                        : null,
                   ),
                 ],
               ),
@@ -108,8 +128,10 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  const Text('Total: ',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Total: ',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   Text(
                     '\$${precioFinal.toStringAsFixed(2)}',
                     style: const TextStyle(fontSize: 18, color: Colors.blue),
@@ -123,13 +145,7 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Agregado $_cantidad x "$nombre" al carrito'),
-                      ),
-                    );
-                  },
+                  onPressed: _agregarAlCarrito,
                   icon: const Icon(Icons.add_shopping_cart),
                   label: const Text('Agregar'),
                   style: ElevatedButton.styleFrom(
