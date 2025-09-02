@@ -3,24 +3,23 @@ import 'package:fluttertest/screens/Tienda/historial/historial_page_2.dart'
     as tienda;
 import 'package:fluttertest/screens/Tienda/inicio/inicio_page.dart' as tienda;
 import 'package:fluttertest/screens/Tienda/carrito/carrito_page.dart' as tienda;
-import 'package:fluttertest/screens/Tienda/clientes/clientes_page.dart'
-    as tienda;
+import 'package:fluttertest/screens/Tienda/clientes/clientes_page.dart' as tienda;
 
-import 'package:fluttertest/screens/Vendedor/historial/historial_page.dart';
-import 'package:fluttertest/screens/Vendedor/inicio/inicio_page.dart';
-import 'package:fluttertest/screens/Vendedor/carrito/carrito_page.dart';
-import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart';
+import 'package:fluttertest/screens/Vendedor/historial/historial_page_2.dart' as vendedor;
+import 'package:fluttertest/screens/Vendedor/inicio/inicio_page.dart' as vendedor;
+import 'package:fluttertest/screens/Vendedor/carrito/carrito_page.dart' as vendedor;
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart' as vendedor;
 
 class NavWrapper extends StatelessWidget {
   final int currentIndex;
-  final int rol; // 1 = tienda, 2 = vendedor
+  final int rol; 
 
   const NavWrapper({super.key, required this.currentIndex, required this.rol});
 
   void _onItemTapped(BuildContext context, int index) {
     if (index == currentIndex) return;
 
-    Widget page;
+    Widget? page;
     if (rol == 1) {
       // Tienda
       switch (index) {
@@ -37,29 +36,34 @@ class NavWrapper extends StatelessWidget {
           page = const tienda.HistorialPage2();
           break;
         default:
-          return;
+          page = null;
       }
-    } else {
+    } else if (rol == 2) {
       // Vendedor
       switch (index) {
         case 0:
-          page = const VendedorInicioPage();
+          page = const vendedor.InicioPage();
           break;
         case 1:
-          page = const VendedorCarritoPage();
+          page = const vendedor.CarritoPage();
           break;
         case 2:
-          page = const VendedorClientesPage();
+          page = const vendedor.ClientesPage();
           break;
         case 3:
-          page = const VendedorHistorialPage();
+          page = const vendedor.HistorialPage2();
           break;
         default:
-          return;
+          page = null;
       }
     }
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => page));
+    if (page != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => page!),
+      );
+    }
   }
 
   @override

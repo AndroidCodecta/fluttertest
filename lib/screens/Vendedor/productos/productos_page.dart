@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/productos/producto_detalle_page.dart';
+import 'package:fluttertest/screens/Vendedor/productos/producto_detalle_page.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 
 class ProductosPage extends StatefulWidget {
@@ -180,7 +180,7 @@ class _ProductosPageState extends State<ProductosPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 0),
+      bottomNavigationBar: const NavWrapper(currentIndex: 0, rol: 2),
     );
   }
 }

@@ -73,7 +73,7 @@ class HistorialPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 3),
+      bottomNavigationBar: const NavWrapper(currentIndex: 3,rol: 2),
     );
   }
 }

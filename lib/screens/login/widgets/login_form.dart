@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../Tienda/clientes/clientes_page.dart';
-import '../../Vendedor/clientes/clientes_page.dart';
-import 'package:fluttertest/dao/usuario_dao.dart';
+import 'package:fluttertest/screens/Tienda/clientes/clientes_page.dart' as tienda;
+import 'package:fluttertest/screens/Vendedor/clientes/clientes_page.dart' as vendedor;
+
+import 'package:fluttertest/dao/usuario_dao.dart'; // Asegúrate de que esta ruta sea la correcta
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -10,49 +11,7 @@ class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final UsuarioDAO _usuarioDAO = UsuarioDAO();
-
-  void _login() async {
-    final username = _usernameController.text.trim();
-    final password = _passwordController.text.trim();
-
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Complete todos los campos")),
-      );
-      return;
-    }
-
-    // Validar en base de datos
-    final user = await _usuarioDAO.login(username, password);
-
-    if (user != null) {
-      // Login exitoso → ir a la pantalla de clientes según el rol
-      if (user.rol == 1) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ClientesPage()),
-        );
-      } else if (user.rol == 2) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const VendedorClientesPage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Rol de usuario no válido")),
-        );
-      }
-    } else {
-      // Usuario o contraseña incorrectos
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Usuario o contraseña incorrectos")),
-      );
-    }
-  }
+iscord
 
   @override
   Widget build(BuildContext context) {

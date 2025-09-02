@@ -9,18 +9,17 @@ void main() async {
 
   final db = await DatabaseHelper().database;
 
-  // Insertar usuario de prueba si no existe
-  await db.insert(
-    'Usuario',
-    {
-      'dni': '12345678',
-      'nombre': 'Usuario Prueba',
-      'usuario': 'admin',
-      'contraseña': '1234', 
-      'celular': '987654321'
-    },
-    conflictAlgorithm: ConflictAlgorithm.ignore, 
-  );
+  // await db.insert(
+  //   'Usuario',
+  //   {
+  //     'dni': '12345678',
+  //     'nombre': 'Usuario Prueba',
+  //     'usuario': 'admin',
+  //     'password': '1234', 
+  //     'celular': '987654321'
+  //   },
+  //   conflictAlgorithm: ConflictAlgorithm.ignore, 
+  // );
 
   runApp(const MyApp());
 }

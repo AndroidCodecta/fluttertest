@@ -219,7 +219,7 @@ class _CarritoPageState extends State<CarritoPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 1),
+      bottomNavigationBar: const NavWrapper(currentIndex: 1, rol: 2),
     );
   }
 
