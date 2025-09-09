@@ -221,7 +221,7 @@ class _ClientesPageState extends State<ClientesPage> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavWrapper(currentIndex: 1, rol: 1),
+      bottomNavigationBar: const NavWrapper(currentIndex: 2, rol: 1),
     );
   }
 }

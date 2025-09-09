@@ -51,7 +51,6 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
             ),
             const SizedBox(height: 20),
 
-            // Nombre
             TextField(
               controller: _nombreController,
               decoration: const InputDecoration(
@@ -61,7 +60,6 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
             ),
             const SizedBox(height: 16),
 
-            // DNI o RUC
             TextField(
               controller: _dniRucController,
               decoration: const InputDecoration(
@@ -71,7 +69,6 @@ class _AgregarClientePageState extends State<AgregarClientePage> {
             ),
             const SizedBox(height: 16),
 
-            // Teléfono con selector de país
             Row(
               children: [
                 DropdownButton<String>(

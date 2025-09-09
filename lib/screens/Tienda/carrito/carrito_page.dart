@@ -106,13 +106,11 @@ class _CarritoPageState extends State<CarritoPage> {
           // Lista de productos en carrito
           Expanded(
             child: carrito.isEmpty
-                ? const Center(child: Text('El carrito está vacío'))
+                ? const Center(child: Text('No tienes productos en el carrito'))
                 : ListView.builder(
                     itemCount: carrito.length,
                     itemBuilder: (context, index) {
                       final producto = carrito[index];
-                      final precioTotal =
-                          producto['precio'] * producto['cantidad'];
                       return Card(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 6),
@@ -158,7 +156,7 @@ class _CarritoPageState extends State<CarritoPage> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'Total: \$${precioTotal.toStringAsFixed(2)}',
+                                  'Total: \$${(producto['precio'] * producto['cantidad']).toStringAsFixed(2)}',
                                   style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.bold),
                                 ),

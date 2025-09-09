@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screens/tienda/productos/productos_page.dart';
+import 'package:fluttertest/screens/tienda/productos/productos_page.dart'
+    as tienda;
 import 'package:fluttertest/widgets/nav_wrapper.dart';
+import 'package:fluttertest/database/database_helper.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({super.key});
@@ -11,32 +13,37 @@ class InicioPage extends StatefulWidget {
 
 class _InicioPageState extends State<InicioPage> {
   final TextEditingController _searchController = TextEditingController();
-
-  final List<Map<String, String>> _todasLasCategorias = const [
-    {'nombre': 'Limpieza', 'icono': '🧼'},
-    {'nombre': 'Abarrotes', 'icono': '🥫'},
-    {'nombre': 'Bebidas', 'icono': '🥤'},
-    {'nombre': 'Snacks', 'icono': '🍪'},
-    {'nombre': 'Carnes', 'icono': '🍖'},
-    {'nombre': 'Lácteos', 'icono': '🥛'},
-  ];
-
-  List<Map<String, String>> _categoriasFiltradas = [];
+  List<String> _categorias = [];
+  List<String> _categoriasFiltradas = [];
 
   @override
   void initState() {
     super.initState();
-    _categoriasFiltradas = _todasLasCategorias;
+    _loadCategorias();
     _searchController.addListener(_filtrarCategorias);
+  }
+
+  Future<void> _loadCategorias() async {
+    final db = await DatabaseHelper().database;
+    final productos = await db.query('Producto');
+    final categoriasSet = <String>{};
+    for (var p in productos) {
+      if (p['categoria'] != null && p['categoria'].toString().isNotEmpty) {
+        categoriasSet.add(p['categoria'].toString());
+      }
+    }
+    setState(() {
+      _categorias = categoriasSet.toList();
+      _categoriasFiltradas = _categorias;
+    });
   }
 
   void _filtrarCategorias() {
     final query = _searchController.text.toLowerCase();
-
     setState(() {
-      _categoriasFiltradas = _todasLasCategorias.where((categoria) {
-        return categoria['nombre']!.toLowerCase().contains(query);
-      }).toList();
+      _categoriasFiltradas = _categorias
+          .where((cat) => cat.toLowerCase().contains(query))
+          .toList();
     });
   }
 
@@ -51,13 +58,11 @@ class _InicioPageState extends State<InicioPage> {
     return Scaffold(
       body: Column(
         children: [
-          // Banner arriba
           SizedBox(
             width: double.infinity,
             height: 80,
             child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
-
           const Padding(
             padding: EdgeInsets.all(16),
             child: Text(
@@ -65,8 +70,6 @@ class _InicioPageState extends State<InicioPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-
-          // Barra de búsqueda
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
@@ -80,10 +83,7 @@ class _InicioPageState extends State<InicioPage> {
               ),
             ),
           ),
-
           const SizedBox(height: 10),
-
-          // Cuadrícula de categorías
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -103,9 +103,8 @@ class _InicioPageState extends State<InicioPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => ProductosPage(
-                              categoria: categoria['nombre']!,
-                            ),
+                            builder: (_) =>
+                                tienda.ProductosPage(categoria: categoria),
                           ),
                         );
                       },
@@ -114,12 +113,7 @@ class _InicioPageState extends State<InicioPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              categoria['icono'] ?? '',
-                              style: const TextStyle(fontSize: 30),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              categoria['nombre'] ?? '',
+                              categoria,
                               style: const TextStyle(fontSize: 16),
                             ),
                           ],

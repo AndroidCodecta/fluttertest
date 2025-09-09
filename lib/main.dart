@@ -20,7 +20,7 @@ void main() async {
     )
   ''');
 
-  // Insertar usuario de ejemplo
+  // Insertar usuario de ejemplo , rol 1 = tienda, 2 = vendedor
   await db.insert('Usuario', {
     'id_usuario': 1,
     'dni': '12345678',

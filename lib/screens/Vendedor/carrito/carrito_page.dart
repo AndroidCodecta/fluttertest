@@ -12,7 +12,6 @@ class CarritoPage extends StatefulWidget {
 }
 
 class _CarritoPageState extends State<CarritoPage> {
-  // Simulación de productos en carrito
   List<Map<String, dynamic>> carrito = [
     {
       'nombre': 'Producto A',
@@ -34,9 +33,9 @@ class _CarritoPageState extends State<CarritoPage> {
   double get subtotal => carrito.fold(
       0, (total, item) => total + (item['precio'] * item['cantidad']));
 
-  double get descuento => subtotal * 0.1; // 10% de descuento como ejemplo
+  double get descuento => subtotal * 0.1; 
 
-  double get igv => (subtotal - descuento) * 0.18; // IGV 18%
+  double get igv => (subtotal - descuento) * 0.18;
 
   double get total => subtotal - descuento + igv;
 
@@ -103,7 +102,6 @@ class _CarritoPageState extends State<CarritoPage> {
             ),
           ),
 
-          // Lista de productos en carrito
           Expanded(
             child: carrito.isEmpty
                 ? const Center(child: Text('El carrito está vacío'))
@@ -147,7 +145,7 @@ class _CarritoPageState extends State<CarritoPage> {
                                     icon: const Icon(Icons.add_circle_outline),
                                     onPressed: () => _incrementCantidad(index),
                                   ),
-                                  const Spacer(), // Empuja el botón borrar a la derecha
+                                  const Spacer(),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     color: Colors.red,

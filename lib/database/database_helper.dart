@@ -22,10 +22,9 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        // Activar llaves foráneas
+       
         await db.execute('PRAGMA foreign_keys = ON');
 
-        // Crear tablas
         await db.execute('''
           CREATE TABLE Usuario (
               id_usuario INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -111,7 +110,6 @@ class DatabaseHelper {
     );
   }
 
-  // Cerrar conexión
   Future closeDB() async {
     final db = await database;
     db.close();
