@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '/widgets/nav_wrapper.dart';
 import 'package:fluttertest/screens/Vendedor/pago/pagar_page.dart';
-
+import 'package:fluttertest/database/database_helper.dart';
 
 class CarritoPage extends StatefulWidget {
   const CarritoPage({super.key});
@@ -12,23 +12,27 @@ class CarritoPage extends StatefulWidget {
 }
 
 class _CarritoPageState extends State<CarritoPage> {
-  List<Map<String, dynamic>> carrito = [
-    {
-      'nombre': 'Producto A',
-      'precio': 50.0,
-      'cantidad': 2,
-    },
-    {
-      'nombre': 'Producto B',
-      'precio': 30.0,
-      'cantidad': 1,
-    },
-    {
-      'nombre': 'Producto C',
-      'precio': 70.0,
-      'cantidad': 3,
-    },
-  ];
+  List<Map<String, dynamic>> carrito = [];
+
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCarrito();
+  }
+
+  Future<void> _loadCarrito() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final db = await DatabaseHelper().database;
+    final productos = await db.query('producto_carrito');
+    setState(() {
+      carrito = productos;
+      _isLoading = false;
+    });
+  }
 
   double get subtotal => carrito.fold(
       0, (total, item) => total + (item['precio'] * item['cantidad']));
@@ -40,30 +44,56 @@ class _CarritoPageState extends State<CarritoPage> {
   double get total => subtotal - descuento + igv;
 
   void _incrementCantidad(int index) {
-    setState(() {
-      carrito[index]['cantidad']++;
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    final nuevaCantidad = (producto['cantidad'] as int) + 1;
+    DatabaseHelper().database.then((db) async {
+      await db.update(
+        'producto_carrito',
+        {'cantidad': nuevaCantidad},
+        where: 'id_p_carrito = ?',
+        whereArgs: [id],
+      );
+      await _loadCarrito();
     });
   }
 
   void _decrementCantidad(int index) {
-    if (carrito[index]['cantidad'] > 1) {
-      setState(() {
-        carrito[index]['cantidad']--;
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    final cantidadActual = producto['cantidad'] as int;
+    if (cantidadActual > 1) {
+      final nuevaCantidad = cantidadActual - 1;
+      DatabaseHelper().database.then((db) async {
+        await db.update(
+          'producto_carrito',
+          {'cantidad': nuevaCantidad},
+          where: 'id_p_carrito = ?',
+          whereArgs: [id],
+        );
+        await _loadCarrito();
       });
     }
   }
 
   void _eliminarProducto(int index) {
-    setState(() {
-      carrito.removeAt(index);
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    DatabaseHelper().database.then((db) async {
+      await db.delete(
+        'producto_carrito',
+        where: 'id_p_carrito = ?',
+        whereArgs: [id],
+      );
+      await _loadCarrito();
     });
   }
 
   void _realizarCompra() {
     // Lógica para procesar compra aquí
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Compra realizada con éxito')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Compra realizada con éxito')));
     setState(() {
       carrito.clear();
     });
@@ -71,9 +101,9 @@ class _CarritoPageState extends State<CarritoPage> {
 
   void _cerrarCompra() {
     // Lógica para cerrar o limpiar carrito sin comprar
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Compra cancelada')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Compra cancelada')));
     setState(() {
       carrito.clear();
     });
@@ -102,15 +132,14 @@ class _CarritoPageState extends State<CarritoPage> {
             ),
           ),
 
+          // Lista de productos en carrito
           Expanded(
             child: carrito.isEmpty
-                ? const Center(child: Text('El carrito está vacío'))
+                ? const Center(child: Text('No tienes productos en el carrito'))
                 : ListView.builder(
                     itemCount: carrito.length,
                     itemBuilder: (context, index) {
                       final producto = carrito[index];
-                      final precioTotal =
-                          producto['precio'] * producto['cantidad'];
                       return Card(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 6),
@@ -156,7 +185,7 @@ class _CarritoPageState extends State<CarritoPage> {
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  'Total: \$${precioTotal.toStringAsFixed(2)}',
+                                  'Total: \$${(producto['precio'] * producto['cantidad']).toStringAsFixed(2)}',
                                   style: const TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
@@ -197,7 +226,10 @@ class _CarritoPageState extends State<CarritoPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const PagarPage()),
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  PagarPage(productos: carrito, total: total),
+                            ),
                           );
                         },
                         child: const Text('Realizar compra'),

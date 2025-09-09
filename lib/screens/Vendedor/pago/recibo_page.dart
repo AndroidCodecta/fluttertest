@@ -2,21 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 
 class ReciboPage extends StatelessWidget {
-  const ReciboPage({super.key});
+  final List<Map<String, dynamic>> productos;
+  final double total;
+
+  const ReciboPage({super.key, required this.productos, required this.total});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> productosComprados = [
-      {'nombre': 'Detergente', 'cantidad': 2, 'precio': 25.5},
-      {'nombre': 'Arroz', 'cantidad': 1, 'precio': 12.0},
-    ];
-
+    final List<Map<String, dynamic>> productosComprados = productos;
     final double subtotal = productosComprados.fold(
       0.0,
-      (total, item) => total + (item['cantidad'] * item['precio']),
+          (total, item) => total + (item['cantidad'] * item['precio']),
     );
-
-    final double total = subtotal; // Podrías agregar IGV si deseas
 
     return Scaffold(
       body: Column(
@@ -53,7 +50,8 @@ class ReciboPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final producto = productosComprados[index];
                         final double totalProducto =
-                            producto['cantidad'] * producto['precio'];
+                            (producto['cantidad'] as num).toDouble() *
+                                (producto['precio'] as num).toDouble();
 
                         return ListTile(
                           title: Text(producto['nombre']),

@@ -15,9 +15,16 @@ class HistorialPage extends StatelessWidget {
   ];
 
   void _abrirRecibo(BuildContext context) async {
+    // Simulación: pasar datos del pago seleccionado
+    final productos = [
+      {'nombre': 'Producto simulado', 'cantidad': 1, 'precio': 10.0},
+    ];
+    final total = 10.0;
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const ReciboPage()),
+      MaterialPageRoute(
+        builder: (_) => ReciboPage(productos: productos, total: total),
+      ),
     );
   }
 
