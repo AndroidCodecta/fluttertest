@@ -143,13 +143,7 @@ class _ProductoDetallePageState extends State<ProductoDetallePage> {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Agregado $_cantidad x "$nombre" al carrito',
-                        ),
-                      ),
-                    );
+                    Navigator.pop(context, _cantidad);
                   },
                   icon: const Icon(Icons.add_shopping_cart),
                   label: const Text('Agregar'),

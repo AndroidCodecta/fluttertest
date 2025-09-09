@@ -13,7 +13,7 @@ class _PagarPageState extends State<PagarPage> {
 
   final List<String> metodosPago = [
     'Visa',
-    'MasterCard',
+    'Mastercard',
     'PayPal',
     'American Express',
   ];
@@ -21,90 +21,48 @@ class _PagarPageState extends State<PagarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Banner ampliado
-          Container(
-            height: 320,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/fondo.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            alignment: Alignment.center,
-            child: const Text(
+      appBar: AppBar(title: const Text('Pagar')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
               'Método de Pago',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Selección de método de pago
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Selecciona un método de pago:', style: TextStyle(fontSize: 18)),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 10,
-                  children: metodosPago.map((metodo) {
-                    return ChoiceChip(
-                      label: Text(metodo),
-                      selected: _metodoSeleccionado == metodo,
-                      onSelected: (_) {
-                        setState(() {
-                          _metodoSeleccionado = metodo;
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 30),
-
-          // Datos de pago (simulados)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Número de tarjeta: **** **** **** 1234', style: TextStyle(fontSize: 16)),
-                SizedBox(height: 8),
-                Text('Titular: Juan Pérez', style: TextStyle(fontSize: 16)),
-                SizedBox(height: 8),
-                Text('Fecha de expiración: 12/26', style: TextStyle(fontSize: 16)),
-                SizedBox(height: 8),
-                Text('Monto total a pagar: \$145.00', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
-
-          const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => const ReciboPage()),
-                  );
-                },
-                child: const Text('Pagar'),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String>(
+              value: _metodoSeleccionado,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _metodoSeleccionado = newValue!;
+                });
+              },
+              items: metodosPago.map((String metodo) {
+                return DropdownMenuItem<String>(
+                  value: metodo,
+                  child: Text(metodo),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Selecione um método',
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 32),
+            ElevatedButton(
+              onPressed: () {
+                // Navegar para a página de recibo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReciboPage()),
+                );
+              },
+              child: const Text('Pagar'),
+            ),
+          ],
+        ),
       ),
     );
   }

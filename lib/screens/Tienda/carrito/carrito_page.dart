@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/widgets/nav_wrapper.dart';
 import 'package:fluttertest/screens/tienda/pago/pagar_page.dart';
-
+import 'package:fluttertest/database/database_helper.dart';
 
 class CarritoPage extends StatefulWidget {
   const CarritoPage({super.key});
@@ -12,27 +12,31 @@ class CarritoPage extends StatefulWidget {
 }
 
 class _CarritoPageState extends State<CarritoPage> {
-  // Simulación de productos en carrito
-  List<Map<String, dynamic>> carrito = [
-    {
-      'nombre': 'Producto A',
-      'precio': 50.0,
-      'cantidad': 2,
-    },
-    {
-      'nombre': 'Producto B',
-      'precio': 30.0,
-      'cantidad': 1,
-    },
-    {
-      'nombre': 'Producto C',
-      'precio': 70.0,
-      'cantidad': 3,
-    },
-  ];
+  List<Map<String, dynamic>> carrito = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCarrito();
+  }
+
+  Future<void> _loadCarrito() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final db = await DatabaseHelper().database;
+    final productos = await db.query('producto_carrito');
+    setState(() {
+      carrito = productos;
+      _isLoading = false;
+    });
+  }
 
   double get subtotal => carrito.fold(
-      0, (total, item) => total + (item['precio'] * item['cantidad']));
+    0,
+    (total, item) => total + (item['precio'] * item['cantidad']),
+  );
 
   double get descuento => subtotal * 0.1; // 10% de descuento como ejemplo
 
@@ -41,30 +45,56 @@ class _CarritoPageState extends State<CarritoPage> {
   double get total => subtotal - descuento + igv;
 
   void _incrementCantidad(int index) {
-    setState(() {
-      carrito[index]['cantidad']++;
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    final nuevaCantidad = (producto['cantidad'] as int) + 1;
+    DatabaseHelper().database.then((db) async {
+      await db.update(
+        'producto_carrito',
+        {'cantidad': nuevaCantidad},
+        where: 'id_p_carrito = ?',
+        whereArgs: [id],
+      );
+      await _loadCarrito();
     });
   }
 
   void _decrementCantidad(int index) {
-    if (carrito[index]['cantidad'] > 1) {
-      setState(() {
-        carrito[index]['cantidad']--;
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    final cantidadActual = producto['cantidad'] as int;
+    if (cantidadActual > 1) {
+      final nuevaCantidad = cantidadActual - 1;
+      DatabaseHelper().database.then((db) async {
+        await db.update(
+          'producto_carrito',
+          {'cantidad': nuevaCantidad},
+          where: 'id_p_carrito = ?',
+          whereArgs: [id],
+        );
+        await _loadCarrito();
       });
     }
   }
 
   void _eliminarProducto(int index) {
-    setState(() {
-      carrito.removeAt(index);
+    final producto = carrito[index];
+    final id = producto['id_p_carrito'];
+    DatabaseHelper().database.then((db) async {
+      await db.delete(
+        'producto_carrito',
+        where: 'id_p_carrito = ?',
+        whereArgs: [id],
+      );
+      await _loadCarrito();
     });
   }
 
   void _realizarCompra() {
     // Lógica para procesar compra aquí
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Compra realizada con éxito')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Compra realizada con éxito')));
     setState(() {
       carrito.clear();
     });
@@ -72,9 +102,9 @@ class _CarritoPageState extends State<CarritoPage> {
 
   void _cerrarCompra() {
     // Lógica para cerrar o limpiar carrito sin comprar
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Compra cancelada')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Compra cancelada')));
     setState(() {
       carrito.clear();
     });
@@ -89,10 +119,7 @@ class _CarritoPageState extends State<CarritoPage> {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           const Padding(
@@ -113,7 +140,9 @@ class _CarritoPageState extends State<CarritoPage> {
                       final producto = carrito[index];
                       return Card(
                         margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 6),
+                          horizontal: 16,
+                          vertical: 6,
+                        ),
                         elevation: 2,
                         child: Padding(
                           padding: const EdgeInsets.all(12),
@@ -123,7 +152,9 @@ class _CarritoPageState extends State<CarritoPage> {
                               Text(
                                 producto['nombre'],
                                 style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -134,7 +165,9 @@ class _CarritoPageState extends State<CarritoPage> {
                               Row(
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.remove_circle_outline),
+                                    icon: const Icon(
+                                      Icons.remove_circle_outline,
+                                    ),
                                     onPressed: () => _decrementCantidad(index),
                                   ),
                                   Text(
@@ -158,7 +191,9 @@ class _CarritoPageState extends State<CarritoPage> {
                                 child: Text(
                                   'Total: \$${(producto['precio'] * producto['cantidad']).toStringAsFixed(2)}',
                                   style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],
@@ -179,7 +214,7 @@ class _CarritoPageState extends State<CarritoPage> {
                   color: Colors.black.withOpacity(0.1),
                   blurRadius: 5,
                   offset: const Offset(0, -1),
-                )
+                ),
               ],
             ),
             child: Column(
@@ -197,7 +232,10 @@ class _CarritoPageState extends State<CarritoPage> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const PagarPage()),
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  PagarPage(productos: carrito, total: total),
+                            ),
                           );
                         },
                         child: const Text('Realizar compra'),
@@ -217,7 +255,7 @@ class _CarritoPageState extends State<CarritoPage> {
           ),
         ],
       ),
-  bottomNavigationBar: const NavWrapper(currentIndex: 1, rol: 1),
+      bottomNavigationBar: const NavWrapper(currentIndex: 1, rol: 1),
     );
   }
 

@@ -15,9 +15,16 @@ class HistorialPage extends StatelessWidget {
   ];
 
   void _abrirRecibo(BuildContext context) async {
+    // Simulación: pasar datos del pago seleccionado
+    final productos = [
+      {'nombre': 'Producto simulado', 'cantidad': 1, 'precio': 10.0},
+    ];
+    final total = 10.0;
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const ReciboPage()),
+      MaterialPageRoute(
+        builder: (_) => ReciboPage(productos: productos, total: total),
+      ),
     );
   }
 
@@ -30,10 +37,7 @@ class HistorialPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 80,
-            child: Image.asset(
-              'assets/images/fondo.jpg',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/fondo.jpg', fit: BoxFit.cover),
           ),
 
           const Padding(
@@ -51,11 +55,16 @@ class HistorialPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final pago = historialPagos[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
                   elevation: 2,
                   child: ListTile(
                     title: Text(pago['cliente']),
-                    subtitle: Text('Monto pagado: \$${pago['monto'].toStringAsFixed(2)}'),
+                    subtitle: Text(
+                      'Monto pagado: \$${pago['monto'].toStringAsFixed(2)}',
+                    ),
                     trailing: ElevatedButton(
                       onPressed: () {
                         // Aquí puedes poner la lógica para mostrar la factura

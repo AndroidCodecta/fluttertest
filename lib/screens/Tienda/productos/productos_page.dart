@@ -113,20 +113,42 @@ class _ProductosPageState extends State<ProductosPage> {
                       itemBuilder: (context, index) {
                         final producto = _productosFiltrados[index];
                         return GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             final pd = {
                               'nombre': producto['nombre'],
                               'descripcion': producto['descripcion'],
                               'precio': (producto['precio'] as num).toDouble(),
                               'stock': producto['stock'] ?? 1,
                             };
-                            Navigator.push(
+                            final cantidad = await Navigator.push<int>(
                               context,
                               MaterialPageRoute(
                                 builder: (_) =>
                                     ProductoDetallePage(producto: pd),
                               ),
                             );
+                            if (cantidad != null && cantidad > 0) {
+                              final db = await DatabaseHelper().database;
+                              await db.insert('producto_carrito', {
+                                'nombre': producto['nombre'],
+                                'imagen': '',
+                                'unid_medida': '',
+                                'cantidad': cantidad,
+                                'descuento': 0,
+                                'precio': producto['precio'],
+                                'id_clientes':
+                                    0, // Cambia por el id del cliente si lo tienes
+                              });
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Agregado $cantidad x "${producto['nombre']}" al carrito',
+                                    ),
+                                  ),
+                                );
+                              }
+                            }
                           },
                           child: Card(
                             elevation: 3,
